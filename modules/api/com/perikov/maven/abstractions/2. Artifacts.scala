@@ -1,11 +1,13 @@
 package com.perikov.maven.abstractions
 
-/** @example
+/** Elaborating on some well known Maven artifact types
+  *
+  * @example
   *   def t1(a: POM): "pom" = a.packaging
   *
   * @example
   *   def t2(g: GroupId, a: ArtifactId, v:Version): Artifact =
-  *       jar.fromComponents((g, a, v, Unknown, "jar"))
+  *   jar.fromComponents((g, a, v, Unknown, "jar"))
   */
 trait MavenArtifacts extends MavenCoordinates:
 

@@ -3,8 +3,12 @@ package com.perikov.maven.abstractions
 import compiletime.ops.string.*
 import compiletime.constValue
 
-/** @example
-  *   val t3 = "SDfa".refine[FQDNPart] // compiles 
+/** @todo
+  *   Maybe we should provide more generic support for refined types per se
+  *   including generic `refine` and `refineOption` methods
+  *
+  * @example
+  *   val t3 = "SDfa".refine[FQDNPart] // compiles
   * @example
   *   val t4 = "SDf".refine[FQDN]
   * @example
@@ -12,6 +16,7 @@ import compiletime.constValue
   */
 
 opaque type RefinedString[Regex <: String] <: String = String
+type NonEmptyString = RefinedString["."]
 
 extension (a: String)
   inline def refine[Regex <: String]: RefinedString[Regex] =
@@ -27,4 +32,6 @@ extension (a: String)
     if compiletime.constValue[Regex].r.matches(a) then Some(a) else None
 
 type FQDNPart = """[a-zA-Z0-9\-_]+"""
+
+/** @todo: is this correct? */
 type FQDN = FQDNPart + """(\.""" + FQDNPart + ")*"
