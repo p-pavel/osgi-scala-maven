@@ -28,18 +28,13 @@ trait Maven:
   type ExecutableJAR <: Artifact
   type RuntimeDependency <: ExecutableJAR
 
-  extension [F[_]](a: Artifact)
+  extension (a: Artifact)
     def groupId: GroupId
     def artifactId: ArtifactId
     def version: Version
     def classifier: Optional[Classifier]
     def packaging: Optional[Packaging]
 
-  extension (a: ExecutableJAR)
-    inline def packaging: DefaultPackaging =
-      compiletime.constValue[DefaultPackaging]
-    inline def classifier: DefaultClassifier =
-      compiletime.constValue[DefaultClassifier]
 
   def artifact(
       groupId: GroupId,
