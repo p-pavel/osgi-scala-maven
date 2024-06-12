@@ -4,9 +4,9 @@ import compiletime.ops.string.*
 import compiletime.constValue
 
 /** @example
-  *   val t3 = "SDfa".refine[FQDNPart] // compiles val
+  *   val t3 = "SDfa".refine[FQDNPart] // compiles 
   * @example
-  *   t4 = "SDf".refine[FQDN]
+  *   val t4 = "SDf".refine[FQDN]
   * @example
   *   val t5 = "".refine[FQDN] // does not compile
   */
