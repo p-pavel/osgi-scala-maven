@@ -1,6 +1,6 @@
 package com.perikov.maven.abstractions
 
-/** We define main concepts of Maven types */
+/**  Main concepts of Maven coordinates */
 trait Maven:
   /** @todo make more precise */
   type GroupId <: String
@@ -10,58 +10,43 @@ trait Maven:
 
   type Version
 
-  type Classifier <: (String | KnonwClassifiers)
+  type Classifier >: KnownClassifiers <: String
 
-  type Packaging <: (String | KnownPackaging)
-
-  type Coordinates <: {
-    type groupId
-    type artifactId
-    type version
-    type classifier
-    type packaging
-  }
-
+  type Packaging >: KnownPackaging <: String
 
   /** just an utility for `[a] =>> a` to avoid bringing dependency on scala
     * library
     */
   type Id[a] = a
 
-
-  type Artifact <: Coordinates[Id]
-  type ExecutableJAR <: Artifact
-  type Dependency <: Artifact
-
-  extension [F[_]](a: Coordinates[F])
-    def groupId: F[GroupId]
-    def version: F[Version]
-    def artifactId: F[ArtifactId]
-    def classifier: F[Classifier]
-    def packaging: F[Packaging]
-
-  extension (a: ExecutableJAR)
-    inline def packaging: DefaultPackaging = compiletime.constValue[DefaultPackaging]
-
+  /** We don't need `Option` since all types we're talking about 
+   * are subtypes of `AnyRef`
+   */
   type Optional[T] = T | Null
 
-  /** This is a part of Maven space with some components fixed.
-   * @todo probably we can specify that SOME vital components should be fixed
-   */
-  type Manifold <: Coordinates[Optional]
+  type Artifact
+  type ExecutableJAR <: Artifact
+  type RuntimeDependency <: ExecutableJAR
+
+  extension [F[_]](a: Artifact)
+    def groupId: GroupId
+    def artifactId: ArtifactId
+    def version: Version
+    def classifier: Optional[Classifier]
+    def packaging: Optional[Packaging]
+
+  extension (a: ExecutableJAR)
+    inline def packaging: DefaultPackaging =
+      compiletime.constValue[DefaultPackaging]
+    inline def classifier: DefaultClassifier =
+      compiletime.constValue[DefaultClassifier]
 
   def artifact(
       groupId: GroupId,
       artifactId: ArtifactId,
       version: Version,
-      classifier: compiletime.constValue[DefaultClassifier],
-      packaging: compiletime.constValue[DefaultPackaging]
+      classifier: Optional[Classifier] = compiletime.constValue[DefaultClassifier],
+      packaging: Optional[Packaging] = compiletime.constValue[DefaultPackaging]
   ): Artifact
 
-  def query(
-      groupId: Optional[GroupId] = null,
-      artifactId: Optional[ArtifactId] = null,
-      version: Optional[Version] | Null = null,
-      classifier: Optional[Classifier] = null,
-      packaging: Optional[Packaging] | Null = null
-  ): Manifold
+

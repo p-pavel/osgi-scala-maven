@@ -4,7 +4,7 @@ type DefaultClassifier = ""
 type SourcesClassifier = "sources"
 type JavadocClassifier = "javadoc"
 
-type KnonwClassifiers =
+type KnownClassifiers =
    DefaultClassifier |
     SourcesClassifier |
     JavadocClassifier  
