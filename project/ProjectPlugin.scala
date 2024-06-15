@@ -9,6 +9,14 @@ object ProjectPlugin extends AutoPlugin {
         .enablePlugins(SbtOsgi)
         .settings(
           name := nm,
+          scalacOptions ++= Seq(
+            "-deprecation",
+            "-explaintypes",
+            "-explain",
+            "-rewrite", "-source", "future-migration",
+            "-Ykind-projector",
+            "-feature",
+          ),
           (Compile / scalaSource) := baseDirectory.value ,
         )
   }

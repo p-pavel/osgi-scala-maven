@@ -1,31 +1,40 @@
 package com.perikov.maven.abstractions
 
 /** Main concepts of Maven coordinates */
-trait MavenCoordinates:
-  /** @todo: is this correct? */
-  type GroupId <: RefinedString[FQDN]
+type DefaultClassifier = ""
 
-  type NoSeparator = RefinedString["[^:]+"]
+type KnownClassifiers =
+  DefaultClassifier | "sources" | "javadoc"
 
-  /** @todo: is this correct? */
-  type ArtifactId <: NoSeparator
+type DefaultPackaging = "jar"
+type KnownPackaging =
+  DefaultPackaging | "pom" | "war" | "ear" | "rar" | "maven-plugin"
 
+type KnownScopes = "compile" | "runtime" | "provided" | "test" | "system" |
+  "import"
 
-  type Version
+type RefinedString[base <: String , regexp <: String] = String
+type MavenSeparator = ":"
+import compiletime.ops.string.*
+type Component = RefinedString[String, "[^" + MavenSeparator + "]+"]
+type GroupId  <: Component
+type ArtifactId <: Component
+type Version  <: Component
+type Packaging >: KnownPackaging <: String
+type Classifier >: KnownClassifiers <: String
 
-  /** @todo what can we tell about version string? */
-  type VersionString <: NoSeparator
+trait IsArtifact[+P <: Packaging, +C <: Classifier,  -T]:
+  extension (t: T)
+    def groupId: GroupId
+    def artifactId: ArtifactId
+    def version: Version
+    def packaging: P
+    def classifier: C
 
-  extension (v: Version) def versionString: VersionString
-  
-  /** We should be able to check string for validity */
-  extension (s: String) def mavenVersionOption: Option[Version]
-
-  type Classifier >: KnownClassifiers <: String
-
-  type Packaging >: KnownPackaging <: String
-  
-  type Scope >: KnownScopes <: String
-
-
-
+trait Artifacts:
+  type Artifact 
+  type Jar <: Artifact
+  type Pom <: Artifact
+  given artifact: IsArtifact[Packaging, Classifier, Artifact]
+  given jarArtifact: IsArtifact["jar", Classifier, Jar]
+  given pomArtifact: IsArtifact["pom", Classifier, Pom] 
