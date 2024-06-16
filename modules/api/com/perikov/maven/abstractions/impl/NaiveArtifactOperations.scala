@@ -28,11 +28,20 @@ given naiveArtifactOperations: ArtifactOperations[NaiveArtifact] with
 
   extension (a: Artifact)
     override def pathComponents: Seq[String] =
-      import a.*
-      groupId.split("\\.").toIndexedSeq ++ Seq(
-        artifactId,
-        version,
-        s"$artifactId-$version.${packaging}"
+      a.groupId.split("\\.").toIndexedSeq ++ Seq(
+        a.artifactId,
+        a.version,
+        filename
       )
+
+    override def filename: String =
+      import a.*
+      s"$artifactId-${a.version}.${packaging}"
+
+    override def bundleSymbolicName: String =
+      import a.*
+      s"$groupId.$artifactId"
+
+    override def version: String = a.version
 
     override def pom: Artifact = a.copy(packaging = "pom")

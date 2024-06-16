@@ -9,11 +9,10 @@ import impl.{naiveArtifactOperations, *}
 object Run extends IOApp.Simple:
   def run: IO[Unit] =
     withClient[IO] {
-      extension (s: String) def parseArtifact(using ops: ArtifactOperations[?]) = ops.parseArtifact(s)
-      given ops: ArtifactOperations[?]                                          = naiveArtifactOperations
-      val api                                                                   = Impl[IO, ops.Artifact]()
-      api.buildFeatureRepo("com.lihaoyi:scalatags_2.13:0.9.1".parseArtifact.toOption.get).flatMap { repo =>
-        IO.println(s"Feature repo: $repo")
-      }
+      // extension (s: String) def parseArtifact(using ops: ArtifactOperations[?]) = ops.parseArtifact(s)
+      given ops: ArtifactOperations[?] = naiveArtifactOperations
+      type Artifact = ops.Artifact
+      given api: Impl[IO, Artifact] = Impl[IO, Artifact]()
+      someTests[ops.Artifact]
 
     }

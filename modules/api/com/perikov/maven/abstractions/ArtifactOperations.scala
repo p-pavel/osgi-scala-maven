@@ -18,5 +18,8 @@ trait ArtifactOperations[A]:
   extension (a: Artifact)
     def pathComponents: Seq[String]
     def pom: Artifact
+    def filename: String
+    def bundleSymbolicName: String
+    def version: String
 end ArtifactOperations
 

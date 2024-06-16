@@ -7,10 +7,16 @@ import cats.effect.implicits.*
 import org.http4s
 import http4s.client.Client as HttpClient
 import com.perikov.maven.abstractions.*
+import java.util.jar.{Manifest as JarManifest}
+import aQute.bnd.osgi.Jar
+import java.io.InputStream
 
 case class FeatureRepo[A](artifact: A, dependencies: Set[A])
 
-class Impl[F[_]:Async: MonadCancelThrow, A](using httpClient: HttpClient[F], ops: ArtifactOperations[A]):
+class Impl[F[_]: Async: MonadCancelThrow, A](using
+    httpClient: HttpClient[F],
+    ops: ArtifactOperations[A]
+):
   type Artifact = A
   extension (a: Artifact)
     def fetchData: Stream[F, Byte] =
@@ -24,30 +30,28 @@ class Impl[F[_]:Async: MonadCancelThrow, A](using httpClient: HttpClient[F], ops
 
     def dependencies: F[Set[Artifact]] =
       import scala.xml.*
-      def parseDependency(nodes: NodeSeq): Stream[Pure, Artifact] =
-        Stream
-          .emits(nodes.map(n =>
-            val scope = (n \ "scope").text 
-            if scope == "test" then Stream.empty //TODO: handle other scopes
-            else
-              Stream.emit(
-                ops.fromComponents(
-                  (n \ "groupId").text,
-                  (n \ "artifactId").text,
-                  (n \ "version").text
-                )
-              )
-          ))
-          .flatten
+      def parseDependency(root: Elem): Set[Artifact] =
+        val nodes = root \\ "project" \ "dependencies" \ "dependency"
+        nodes.foldLeft(Set.empty)((res, n) =>
+          val scope = (n \ "scope").text
+          if scope == "test" then res
+          else
+            res + ops.fromComponents(
+              (n \ "groupId").text,
+              (n \ "artifactId").text,
+              (n \ "version").text
+            )
+        )
 
-      Stream
-        .eval(a.pom.fetchData.through(io.toInputStream).map(XML.load).compile.lastOrError)
-        .flatMap(xml =>
-          parseDependency(
-            xml \\ "project" \ "dependencies" \ "dependency"
-          )
-        ).fold(Set.empty[Artifact])(_ + _).compile.lastOrError
+      fetchSomethingUnsafe(XML.load).map(parseDependency)
+
+    private def fetchSomething[A](f: InputStream => F[A]): F[A] =
+      a.fetchData.through(io.toInputStream).evalMap(f).compile.lastOrError
+
+    private def fetchSomethingUnsafe[A](f: InputStream => A): F[A] =
+      fetchSomething(a => Sync[F].delay(f(a)))
+
+    def fetchBndJar: F[Jar] = fetchSomethingUnsafe(Jar(a.filename, _))
 
     def buildFeatureRepo: F[FeatureRepo[Artifact]] =
-
       dependencies.map(FeatureRepo(a, _))
