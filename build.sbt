@@ -13,15 +13,16 @@ val httpSettings = {
 
 lazy val api = module("api")
   .settings(
-    libraryDependencies += "eu.timepit"             %% "refined"     % "0.11.2",
+    fork                                            := true,
     httpSettings,
-    libraryDependencies += "org.typelevel"          %% "cats-effect" % "3.5.4",
-    libraryDependencies += "org.scala-lang.modules" %% "scala-xml"   % "2.3.0",
+    libraryDependencies += "com.datastax.oss"        % "java-driver-core" % "4.14.0",
+    libraryDependencies += "org.scala-lang.modules" %% "scala-xml"        % "2.3.0",
+    libraryDependencies += "biz.aQute.bnd"           % "biz.aQute.bndlib" % "7.0.0",
     (Compile / console / initialCommands) += "import cats.*, cats.effect.*, org.http4s.client.*, org.http4s.*, com.perikov.maven.abstractions.*",
     scalacOptions ++= Seq("-Ximplicit-search-limit", "1000", "-Wunused:imports"),
     OsgiKeys.privatePackage                         := Seq.empty,
     OsgiKeys.exportPackage                          := Seq(
-      "com.perikov.maven.abstractions"
+      "com.perikov.maven.abstractions.*"
     ),
     OsgiKeys.importPackage                          := Seq(
       "*"
