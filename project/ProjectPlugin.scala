@@ -18,6 +18,8 @@ object ProjectPlugin extends AutoPlugin {
             "-feature",
           ),
           (Compile / scalaSource) := baseDirectory.value ,
+          (Test / scalaSource) := baseDirectory.value , //TODO: create testModule
+
         )
   }
 }

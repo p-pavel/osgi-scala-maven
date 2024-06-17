@@ -28,3 +28,11 @@ lazy val api = module("api")
       "*"
     )
   )
+
+lazy val tests = module("tests")
+  .dependsOn(api)
+  .settings(
+    fork              := true,
+    libraryDependencies +=
+      "org.scalameta" %% "munit" % "0.7.29" 
+  )
