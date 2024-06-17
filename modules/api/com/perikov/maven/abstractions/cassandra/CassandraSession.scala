@@ -8,6 +8,11 @@ trait CassandraSession[F[_]]:
   type BoundStatement
   type Row
   type ResultSet
+  type ConsistencyLevel
+  // val LOCAL_SERIAL: ConsistencyLevel
+  // val ANY: ConsistencyLevel
+  // val LOCAL_QUORUM: ConsistencyLevel
+
 
   extension (rs: ResultSet) def oneOrError: F[Row]
 
