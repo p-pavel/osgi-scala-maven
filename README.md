@@ -270,7 +270,19 @@ Just take a look at this: https://doc.akka.io/guide/microservices-tutorial/overv
 
 Sorry, that was short, unstructured and full of mistakes, but I ran out of cigarettes.
 
+I spent lots of time on thins that are not proven, considered not worth doing, trying to
+convince people that I should leave along and not behaving good.
+
+One of my most prominent mistakes was not keeping "the journal of negative results" -- the 
+things I tried, spent weeks on and consider "not working""
+
+But there's no sense crying over every mistake, you just keep on trying till you run out
+of cake :)
+
 If there're some ideas you like -- that's great. If all of the above is just useless rant -- that's
 also perfect.
 
 Have a nice software engineering and let Scala be with you.
+
+https://www.youtube.com/watch?v=Y6ljFaKRTrI
+
