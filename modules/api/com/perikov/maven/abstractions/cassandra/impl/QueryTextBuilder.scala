@@ -30,6 +30,9 @@ class QueryTextBuilder(
     s"CREATE TABLE IF NOT EXISTS $fullTableName ($fieldDefinitions, PRIMARY KEY $primaryKeyDefinition"
 
 end QueryTextBuilder
+
+
+
 class CacheQueryTextBuilder(
     keyspace: String,
     tableName: String,

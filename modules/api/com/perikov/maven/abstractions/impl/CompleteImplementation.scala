@@ -3,11 +3,9 @@ package com.perikov.maven.abstractions.impl
 import fs2.*
 import cats.effect.*
 import cats.implicits.*
-import cats.effect.implicits.*
 import org.http4s
 import http4s.client.Client as HttpClient
 import com.perikov.maven.abstractions.*
-import java.util.jar.{Manifest as JarManifest}
 import aQute.bnd.osgi.Jar
 import java.io.InputStream
 

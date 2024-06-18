@@ -1,4 +1,4 @@
-package com.perikov.maven.abstractions
+package com.perikov.maven.abstractions.impl
 
 import org.http4s.ember.client.EmberClientBuilder
 import org.http4s.client
