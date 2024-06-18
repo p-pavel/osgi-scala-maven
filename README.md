@@ -51,7 +51,7 @@ Generally: specify types and specify operations on them, using `extension` freel
 the feeling of "OO" dot-style code. `using` will often transparently bring things into scope.
 Don't put the operation "*into*" types (assuming the type is `AnyRef`)
 
-With Scala, we can be arbitrarily precise about types also and can specify both upper and lower limits (take a look at "Maven coordinate space" in this project).
+With Scala, we can be arbitrarily precise about types also and can specify both upper and lower bounds (take a look at "Maven coordinate space" in this project).
 
 Using very precise types brings not only the benefits of compact and formally verified specification and documentation.
 
@@ -112,7 +112,8 @@ what I use.
 
 You get logging, shell you can ssh to, easy way to write commands for this shell, configuration management,
 dependency injection, resolution and constraint solving,
-deploying `wars`, `blueprint` or `spring` containers etc etc for free. Just put a couple of lines into your build and be happy.
+deploying `wars`, `blueprint` or `spring` containers, interactive investigation what happens in your system
+etc etc for free. Just put a couple of lines into your build and be happy.
 
 ```sbt
     OsgiKeys.privatePackage                         := Seq.empty,
@@ -255,7 +256,7 @@ Don't use it. Akka will corrupt your codebase and push you to do all kind of stu
 You don't need stateful actors. You need async framework like cats-effect, or ZIO and distributed data
 structures (queues, maps, sets etc).
 
-Letter are provided with tools like SQL databases, beutiful Cassandra or in memory cluster Hazelcast.
+Latter are provided with tools like SQL databases, beutiful Cassandra or in memory cluster Hazelcast.
 
 You will not do any better.
 
@@ -270,11 +271,11 @@ Just take a look at this: https://doc.akka.io/guide/microservices-tutorial/overv
 
 Sorry, that was short, unstructured and full of mistakes, but I ran out of cigarettes.
 
-I spent lots of time on thins that are not proven, considered not worth doing, trying to
-convince people that I should leave along and not behaving good.
+I spent lots of time on things that are not proven, considered not worth doing, trying to
+convince people that I should leave alone and not behaving good.
 
 One of my most prominent mistakes was not keeping "the journal of negative results" -- the 
-things I tried, spent weeks on and consider "not working""
+things I tried, spent weeks on and finally consider "not working".
 
 But there's no sense crying over every mistake, you just keep on trying till you run out
 of cake :)
