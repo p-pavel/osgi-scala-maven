@@ -224,13 +224,13 @@ Good luck with the latter.
 
 We live in the age of microservice catastrophe.
 
-Everyone think they are Google and everyone think the should split their application
+Everyone think they are Google and everyone think they should split their application
 into microservices (read: docker containers containing a JVM with 1.5 vCPU available to it communicating
 via REST, gRPC, whatever).
 
-Why on earth?
+Why on Earth?
 
-We have interfaces in Java/JVM (java is not a language, it's platform ABI).
+We have interfaces in Java/JVM (java is not a language, it's the platform ABI).
 
 Design your application around interfaces, deploy to OSGi containers (see how Karaf does clustering using
 Cellar to distribute configurations), let the parts talk via interfaces. Let JVM happily do
